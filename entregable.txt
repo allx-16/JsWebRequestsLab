@@ -1,0 +1,61 @@
+EJERCICIO: PETICIONES WEB CON JAVASCRIPT - ENTREGABLE
+
+PASO 1
+¿Qué es el objeto generado por XMLHttpRequest?
+Es un objeto del navegador que permite hacer peticiones HTTP a un servidor
+desde JavaScript sin recargar la página (la base de AJAX). Con él se
+configura la petición (método y URL), se envía y se recibe la respuesta
+(responseText, status, etc.). En este ejercicio se usa para consumir la API
+https://fakestoreapi.com/products.
+
+¿Qué hace el método open de xhr?
+Prepara (inicializa) la petición: indica el método HTTP ("GET"), la URL a la
+que se va a hacer la petición y si será asíncrona (true). Todavía no envía
+nada; la petición se manda hasta que se llama a xhr.send().
+
+¿Qué hace onload de xhr?
+onload es la función que se ejecuta cuando la petición termina y llega la
+respuesta del servidor. Como la petición es asíncrona, el resto del código
+sigue corriendo y, cuando la respuesta está lista, se ejecuta onload. Ahí se
+lee xhr.responseText, se convierte de texto JSON a un arreglo con JSON.parse
+y se guarda en data.json.
+
+Al hacer clic en Remove Data, la tabla se vacía porque el botón ejecuta
+tbody.innerHTML = "".
+
+Al escribir data en la consola se muestra el objeto {json: Array(20)}: la
+propiedad json contiene el arreglo de 20 productos que devolvió la API, cada
+uno con id, title, price, description, category, image y rating.
+
+PASO 2
+¿Qué significa => ?
+Es la sintaxis de una función flecha (arrow function), una forma corta de
+escribir una función anónima. element => { console.log(element); } equivale
+a function (element) { console.log(element); }. Del lado izquierdo van los
+parámetros y del derecho el cuerpo. forEach la llama una vez por cada
+elemento del arreglo, pasándole ese elemento como parámetro.
+
+La función genTr recibe un producto y crea una fila <tr> con cinco <td>
+(id, title, price, description y category). En onload se recorre el arreglo
+con forEach y cada fila se agrega al <tbody> con append.
+
+PASO 3
+El botón Load Data se conectó desde request.js, sin tocar el HTML:
+document.getElementById("btnLoad").addEventListener("click", ...) llama a
+getData().
+
+¿Qué hace filter y cómo funciona includes?
+filter es un método de los arreglos que recorre cada elemento y llama a una
+función con él; crea un arreglo NUEVO solo con los elementos para los que la
+función devuelve true. El arreglo original (data.json) no se modifica.
+includes es un método de las cadenas que devuelve true si la cadena contiene
+el texto que recibe como parámetro, en cualquier posición. Juntos:
+data.json.filter(e => e.title.includes(input.value)) devuelve solo los
+productos cuyo título contiene lo que se escribió en el campo de búsqueda.
+includes distingue mayúsculas de minúsculas, por eso en la búsqueda se
+convierten ambos textos a minúsculas con toLowerCase().
+
+PASO 4
+Al hacer clic en el botón de búsqueda se filtra data.json con el texto del
+input, se vacía la tabla y se llena solo con los productos que coinciden
+(función fillTable). Si el campo está vacío se muestran todos los productos.
